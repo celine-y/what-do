@@ -4,8 +4,9 @@ from django.conf import settings
 # Create your views here.
 
 class Activity(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL,
         on_delete=models.PROTECT)
+    created_on = models.DateTimeField(auto_now_add=True)
     #activity name
     name = models.CharField(max_length=255, null=False)
     #description
@@ -15,15 +16,17 @@ class Activity(models.Model):
         return self.name
 
 class Effort(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE)
 
     activity = models.ForeignKey(Activity,
         on_delete=models.CASCADE)
 
-    date = models.DateTimeField(auto_now_add=True)
+    created_on = models.DateTimeField(auto_now_add=True)
 
     media = models.ImageField(
         upload_to='effort',
         blank=True
     )
+
+    caption = models.CharField(max_length=255, blank=True, default='')

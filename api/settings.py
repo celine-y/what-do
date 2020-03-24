@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_auth',
     'allauth',
+    'allauth.socialaccount',
     'allauth.account',
     'rest_auth.registration',
     'whatDo',
@@ -143,7 +144,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.DjangoModelPermissions',
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
     ),
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
@@ -152,6 +153,11 @@ REST_FRAMEWORK = {
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'accounts.serializers.UserSerializer'
 }
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend', # default
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
 
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True

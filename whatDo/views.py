@@ -1,18 +1,25 @@
-from rest_framework.mixins import (
-    CreateModelMixin, ListModelMixin, RetrieveModelMixin, UpdateModelMixin
-)
-from rest_framework.viewsets import GenericViewSet
-from .models import Activity
-from .serializers import ActivitySerializer
+from rest_framework import viewsets
+from .models import Activity, Effort
+from .serializers import ActivitySerializer, EffortSerializer
+from .permissions import IsCreator
+from rest_framework.permissions import IsAdminUser
 
 
-class ActivityViewSet(GenericViewSet,
-                        CreateModelMixin,
-                        RetrieveModelMixin,
-                        UpdateModelMixin,
-                        ListModelMixin):
+class ActivityViewSet(viewsets.ModelViewSet):
     """
     Provides a get method handler.
     """
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
+
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user)
+
+class EffortViewSet(viewsets.ModelViewSet):
+
+    queryset = Effort.objects.all()
+    serializer_class = EffortSerializer
+    permission_classes = [IsCreator]
+
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user)

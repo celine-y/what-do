@@ -1,10 +1,11 @@
 from django.urls import path, include, re_path
 from rest_framework.routers import DefaultRouter
-from .views import ActivityViewSet
+from .views import ActivityViewSet, EffortViewSet
 from allauth.account.views import confirm_email
 
 router = DefaultRouter()
 router.register('activity', ActivityViewSet)
+router.register('effort', EffortViewSet)
 
 urlpatterns = [
     re_path('', include(router.urls)),

@@ -13,10 +13,19 @@ class Command(BaseCommand):
         # Owner group
         group, created = Group.objects.get_or_create(name=settings.GROUP_BASE)
         if group:
-            allowed_models = [Activity, Effort]
+            # models with all permissions
+            allowed_models = [Effort]
             for allowed_model in allowed_models:
                 content_type = ContentType.objects.get_for_model(allowed_model)
                 permissions = Permission.objects.filter(content_type=content_type)
                 for permission in permissions:
                     group.permissions.add(permission)
-            print('base group created')
+            # models with specific permissions
+            allowed_models = [Activity]
+            for allowed_model in allowed_models:
+                content_type = ContentType.objects.get_for_model(allowed_model)
+                permissions = Permission.objects.filter(content_type=content_type)
+                for permission in permissions:
+                    if 'add' in permission.codename or 'view' in permission.codename:
+                        group.permissions.add(permission)
+            print('Base group created')
