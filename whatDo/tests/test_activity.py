@@ -37,9 +37,6 @@ class UpdateActivityTest(BaseViewTest):
 
     def test_not_creator_update_activity(self):
         self.client.force_login(self.user)
-        print(self.user)
-        print(self.activity.created_by)
-
         response = self.client.put(
             reverse('activity-detail', kwargs={'pk': self.activity.pk}),
             {'name': 'new name'},

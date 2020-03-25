@@ -24,7 +24,6 @@ class BaseViewTest(APITestCase):
 
     @staticmethod
     def create_effort(user, activity, caption="", media=None):
-        print(user)
         return Effort.objects.create(
             created_by=user,
             activity=activity,
@@ -37,6 +36,8 @@ class BaseViewTest(APITestCase):
         self.user2 = User.objects.create_user("user2@example.com", "p@ssw0rd")
         self.activity = self.create_activity("dance", "create a new dance", self.user2)
         self.eff1 = self.create_effort(self.user, self.activity)
+        self.eff2 = self.create_effort(self.user, self.activity)
+
 
 class UpdateEffortTest(BaseViewTest):
 
